@@ -225,6 +225,30 @@ describe('cli', function() {
     });
   });
 
+  describe('node-sass in.scss --output path/to/file/out.css', function() {
+    it('should create the output directory', function(done) {
+      var src = fixture('output-directory/index.scss');
+      var dest = fixture('output-directory/path/to/file/index.css');
+      var bin = spawn(cli, [src, '--output', path.dirname(dest)]);
+
+      bin.on('close', function() {
+        assert(fs.existsSync(path.dirname(dest)));
+        // Delete file
+        fs.unlinkSync(dest);
+        // Delete path/to/file
+        fs.rmdirSync(path.dirname(dest));
+        dest = path.dirname(dest);
+        // Delete path/to
+        fs.rmdirSync(path.dirname(dest));
+        dest = path.dirname(dest);
+        // Delete path
+        fs.rmdirSync(path.dirname(dest));
+        done();
+      });
+    });
+
+  });
+
   describe('importer', function() {
     var dest = fixture('include-files/index.css');
     var src = fixture('include-files/index.scss');
