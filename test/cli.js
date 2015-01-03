@@ -233,15 +233,11 @@ describe('cli', function() {
 
       bin.on('close', function() {
         assert(fs.existsSync(path.dirname(dest)));
-        // Delete file
         fs.unlinkSync(dest);
-        // Delete path/to/file
         fs.rmdirSync(path.dirname(dest));
         dest = path.dirname(dest);
-        // Delete path/to
         fs.rmdirSync(path.dirname(dest));
         dest = path.dirname(dest);
-        // Delete path
         fs.rmdirSync(path.dirname(dest));
         done();
       });
